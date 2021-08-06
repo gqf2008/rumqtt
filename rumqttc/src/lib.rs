@@ -100,14 +100,14 @@
 extern crate log;
 
 use std::fmt::{self, Debug, Formatter};
-use std::sync::Arc;
+// use std::sync::Arc;
 use std::time::Duration;
 
 mod client;
 mod eventloop;
 mod framed;
 mod state;
-mod tls;
+// mod tls;
 
 pub use async_channel::{SendError, Sender, TrySendError};
 pub use client::{AsyncClient, Client, ClientError, Connection};
@@ -115,8 +115,8 @@ pub use eventloop::{ConnectionError, Event, EventLoop};
 pub use mqttbytes::v4::*;
 pub use mqttbytes::*;
 pub use state::{MqttState, StateError};
-pub use tokio_rustls::rustls::internal::pemfile::{certs, pkcs8_private_keys, rsa_private_keys};
-pub use tokio_rustls::rustls::ClientConfig;
+// pub use tokio_rustls::rustls::internal::pemfile::{certs, pkcs8_private_keys, rsa_private_keys};
+// pub use tokio_rustls::rustls::ClientConfig;
 
 pub type Incoming = Packet;
 
@@ -193,13 +193,13 @@ impl From<Unsubscribe> for Request {
 #[derive(Clone)]
 pub enum Transport {
     Tcp,
-    Tls(TlsConfiguration),
-    #[cfg(feature = "websocket")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
-    Ws,
-    #[cfg(feature = "websocket")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
-    Wss(TlsConfiguration),
+    //     Tls(TlsConfiguration),
+    //     #[cfg(feature = "websocket")]
+    //     #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
+    //     Ws,
+    //     #[cfg(feature = "websocket")]
+    //     #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
+    //     Wss(TlsConfiguration),
 }
 
 impl Default for Transport {
@@ -214,75 +214,75 @@ impl Transport {
         Self::Tcp
     }
 
-    /// Use secure tcp with tls as transport
-    pub fn tls(
-        ca: Vec<u8>,
-        client_auth: Option<(Vec<u8>, Key)>,
-        alpn: Option<Vec<Vec<u8>>>,
-    ) -> Self {
-        let config = TlsConfiguration::Simple {
-            ca,
-            alpn,
-            client_auth,
-        };
+    // Use secure tcp with tls as transport
+    // pub fn tls(
+    //     ca: Vec<u8>,
+    //     client_auth: Option<(Vec<u8>, Key)>,
+    //     alpn: Option<Vec<Vec<u8>>>,
+    // ) -> Self {
+    //     let config = TlsConfiguration::Simple {
+    //         ca,
+    //         alpn,
+    //         client_auth,
+    //     };
 
-        Self::tls_with_config(config)
-    }
+    //     Self::tls_with_config(config)
+    // }
 
-    pub fn tls_with_config(tls_config: TlsConfiguration) -> Self {
-        Self::Tls(tls_config)
-    }
+    // pub fn tls_with_config(tls_config: TlsConfiguration) -> Self {
+    //     Self::Tls(tls_config)
+    // }
 
-    /// Use websockets as transport
-    #[cfg(feature = "websocket")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
-    pub fn ws() -> Self {
-        Self::Ws
-    }
+    // /// Use websockets as transport
+    // #[cfg(feature = "websocket")]
+    // #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
+    // pub fn ws() -> Self {
+    //     Self::Ws
+    // }
 
-    /// Use secure websockets with tls as transport
-    #[cfg(feature = "websocket")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
-    pub fn wss(
-        ca: Vec<u8>,
-        client_auth: Option<(Vec<u8>, Key)>,
-        alpn: Option<Vec<Vec<u8>>>,
-    ) -> Self {
-        let config = TlsConfiguration::Simple {
-            ca,
-            client_auth,
-            alpn,
-        };
+    // /// Use secure websockets with tls as transport
+    // #[cfg(feature = "websocket")]
+    // #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
+    // pub fn wss(
+    //     ca: Vec<u8>,
+    //     client_auth: Option<(Vec<u8>, Key)>,
+    //     alpn: Option<Vec<Vec<u8>>>,
+    // ) -> Self {
+    //     let config = TlsConfiguration::Simple {
+    //         ca,
+    //         client_auth,
+    //         alpn,
+    //     };
 
-        Self::wss_with_config(config)
-    }
+    //     Self::wss_with_config(config)
+    // }
 
-    #[cfg(feature = "websocket")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
-    pub fn wss_with_config(tls_config: TlsConfiguration) -> Self {
-        Self::Wss(tls_config)
-    }
+    // #[cfg(feature = "websocket")]
+    // #[cfg_attr(docsrs, doc(cfg(feature = "websocket")))]
+    // pub fn wss_with_config(tls_config: TlsConfiguration) -> Self {
+    //     Self::Wss(tls_config)
+    // }
 }
 
-#[derive(Clone)]
-pub enum TlsConfiguration {
-    Simple {
-        /// connection method
-        ca: Vec<u8>,
-        /// alpn settings
-        alpn: Option<Vec<Vec<u8>>>,
-        /// tls client_authentication
-        client_auth: Option<(Vec<u8>, Key)>,
-    },
-    /// Injected rustls ClientConfig for TLS, to allow more customisation.
-    Rustls(Arc<ClientConfig>),
-}
+// #[derive(Clone)]
+// pub enum TlsConfiguration {
+//     Simple {
+//         /// connection method
+//         ca: Vec<u8>,
+//         /// alpn settings
+//         alpn: Option<Vec<Vec<u8>>>,
+//         /// tls client_authentication
+//         client_auth: Option<(Vec<u8>, Key)>,
+//     },
+//     /// Injected rustls ClientConfig for TLS, to allow more customisation.
+//     Rustls(Arc<ClientConfig>),
+// }
 
-impl From<ClientConfig> for TlsConfiguration {
-    fn from(config: ClientConfig) -> Self {
-        TlsConfiguration::Rustls(Arc::new(config))
-    }
-}
+// impl From<ClientConfig> for TlsConfiguration {
+//     fn from(config: ClientConfig) -> Self {
+//         TlsConfiguration::Rustls(Arc::new(config))
+//     }
+// }
 
 // TODO: Should all the options be exposed as public? Drawback
 // would be loosing the ability to panic when the user options
